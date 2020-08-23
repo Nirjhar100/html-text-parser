@@ -6,7 +6,7 @@ const htmlToText = require('html-to-text');
 const bodyparser = require('body-parser')
 var scrapedHtml;
 var text;
-
+var processedText
 app.get('/extract', (req, res) => {
    // console.log(req.params.text)
     //console.log(req.params.query)
@@ -18,7 +18,9 @@ app.get('/extract', (req, res) => {
  
    text = htmlToText.fromString(scrapedHtml);
     console.log(text);
-    return res.json({text:text});
+    processedText = text.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+    processedText=processedText.replace(/[^a-zA-Z 0-9]/g, " ")
+    return res.json({text:processedText});
   
 });
 
